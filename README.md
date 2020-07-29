@@ -6,9 +6,21 @@
 - **nginx** - `:8080`
 - **mysql** - `:3306`
 
+## Composer dependencies
+
+- `docker-compose run --rm composer install` 
+
+## Set .env file
+
+- Rename src/.env.example to src/.env 
+
 ## Run migrations
 
 - `docker-compose run --rm artisan migrate` 
+
+## Install passport for routes authentication
+
+- `docker-compose run --rm artisan passport:install` 
 
 ## Endpoints
 
@@ -23,7 +35,7 @@
 
 - `docker-compose run --rm artisan wishlist:export` 
 
-## Run test
+## Run unit test
 
 - `docker-compose run --rm artisan test` 
 
