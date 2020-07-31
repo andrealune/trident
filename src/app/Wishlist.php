@@ -12,6 +12,7 @@ class Wishlist extends Model
      * @var array
      */
     protected $fillable = [        
+        'user_id',
         'name'
     ];
 

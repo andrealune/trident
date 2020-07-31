@@ -23,8 +23,18 @@ Route::post('login', 'Api\RegisterController@login');
 
 Route::middleware('auth:api')->group( function () {
     // products routes 
-    Route::resource('products', 'Api\ProductController');
+    Route::get('products', 'Api\ProductController@index');
+    Route::get('products/{id}', 'Api\ProductController@show');
+
+    Route::middleware('validator:Product,create')->group( function () {
+    	Route::post('products', 'Api\ProductController@store');
+    });
+
     // wihlists routes
-    Route::post('wishlists', 'Api\WishlistController@store')->name('wishlists.store');
-    Route::post('wishlists/add', 'Api\WishlistController@addProduct')->name('wishlists.add.product');
+    Route::middleware('validator:Wishlist,create')->group( function () {
+    	Route::post('wishlists', 'Api\WishlistController@store')->name('wishlists.store');
+    });
+    Route::middleware('validator:Wishlist,addProduct')->group( function () {
+    	Route::post('wishlists/add', 'Api\WishlistController@addProduct')->name('wishlists.add.product');
+    });
 });

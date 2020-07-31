@@ -4,12 +4,21 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Validator;
 
-use App\Product;
+use App\Repository\ProductRepositoryInterface;
+
 use App\Http\Resources\Product as ProductResource;
+use App\Http\Request\Product as ProductRequest;
 use App\Http\Controllers\Api\BaseController as BaseController;
 
 class ProductController extends BaseController
 {
+    private $productRepository;
+
+    public function __construct(ProductRepositoryInterface $productRepository)
+    {
+        $this->productRepository = $productRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,10 +26,11 @@ class ProductController extends BaseController
      */
     public function index()
     {
-        $products = Product::all();
+        $products = $this->productRepository->all();
     
         return $this->sendResponse(ProductResource::collection($products), 'Products retrieved successfully.');
     }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -29,16 +39,7 @@ class ProductController extends BaseController
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'detail' => 'required'
-        ]);
-   
-        if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());       
-        }
-   
-        $product = Product::create(
+        $product = $this->productRepository->create(
             $request->all()
         );
    
@@ -53,7 +54,7 @@ class ProductController extends BaseController
      */
     public function show($id)
     {
-        $product = Product::find($id);
+        $product =  $this->productRepository->find($id);
   
         if (is_null($product)) {
             return $this->sendError('Product not found.');
