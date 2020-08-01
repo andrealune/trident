@@ -18,21 +18,21 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('register', 'Api\RegisterController@register');
-Route::post('login', 'Api\RegisterController@login');
+Route::post('register', 'Api\RegisterController@register')->name('register');
+Route::post('login', 'Api\RegisterController@login')->name('login');
 
 Route::middleware('auth:api')->group( function () {
     // products routes 
-    Route::get('products', 'Api\ProductController@index');
-    Route::get('products/{id}', 'Api\ProductController@show');
+    Route::get('products', 'Api\ProductController@index')->name('products.all');
+    Route::get('products/{id}', 'Api\ProductController@show')->name('products.show');
 
     Route::middleware('validator:Product,create')->group( function () {
-    	Route::post('products', 'Api\ProductController@store');
+    	Route::post('products', 'Api\ProductController@store')->name('products.create');
     });
 
     // wihlists routes
     Route::middleware('validator:Wishlist,create')->group( function () {
-    	Route::post('wishlists', 'Api\WishlistController@store')->name('wishlists.store');
+    	Route::post('wishlists', 'Api\WishlistController@store')->name('wishlists.create');
     });
     Route::middleware('validator:Wishlist,addProduct')->group( function () {
     	Route::post('wishlists/add', 'Api\WishlistController@addProduct')->name('wishlists.add.product');

@@ -15,4 +15,9 @@ class Product extends Model
         'name', 
         'detail'
     ];
+
+    public function wishlists() 
+    {
+        return $this->belongsToMany('App\Wishlist', 'product_wishlist')->withTimestamps();
+    }
 }
